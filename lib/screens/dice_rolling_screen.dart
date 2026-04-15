@@ -79,7 +79,7 @@ class _DiceRollingScreenState extends State<DiceRollingScreen> {
                 TextField(
                   controller: _diceController,
                   decoration: const InputDecoration(labelText: 'Enter dice notation (e.g., 2d6)'),
-                  inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d*d\d*$'))],
+                  inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d*d\d*([+-]\d*)?'))],
                 ),
                 const SizedBox(height: 20),
                 Row(
