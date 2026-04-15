@@ -46,10 +46,10 @@ class SkeletonLoader extends StatefulWidget {
                   const SizedBox(width: 16),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      SkeletonBox(height: 18, width: 140),
-                      SizedBox(height: 8),
-                      SkeletonBox(height: 13, width: 100),
+                    children: [
+                      const SkeletonBox(height: 18, width: 140),
+                      const SizedBox(height: 8),
+                      const SkeletonBox(height: 13, width: 100),
                     ],
                   ),
                 ],
@@ -74,10 +74,10 @@ class SkeletonLoader extends StatefulWidget {
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    SkeletonBox(height: 15, width: double.infinity),
-                    SizedBox(height: 6),
-                    SkeletonBox(height: 12, width: 120),
+                  children: [
+                    const SkeletonBox(height: 15, width: double.infinity),
+                    const SizedBox(height: 6),
+                    const SkeletonBox(height: 12, width: 120),
                   ],
                 ),
               ),
@@ -115,10 +115,10 @@ class SkeletonLoader extends StatefulWidget {
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    SkeletonBox(height: 14, width: 100),
-                    SizedBox(height: 6),
-                    SkeletonBox(height: 12, width: 160),
+                  children: [
+                    const SkeletonBox(height: 14, width: 100),
+                    const SizedBox(height: 6),
+                    const SkeletonBox(height: 12, width: 160),
                   ],
                 ),
               ),
