@@ -1,0 +1,95 @@
+# SETUP AND TESTING GUIDE FOR FATECASTER
+
+## Table of Contents
+1. [Required Software](#required-software)
+2. [Installing Software](#installing-software)
+3. [Configuring Firebase](#configuring-firebase)
+4. [Setting Up the Flutter App](#setting-up-the-flutter-app)
+5. [Testing the App](#testing-the-app)
+6. [Troubleshooting](#troubleshooting)
+
+## Required Software
+Before you start, make sure you have the following software installed:
+- **Flutter SDK**
+- **Firebase CLI**
+- **Android Studio (or VS Code)**
+- **Git**
+
+### Download URLs
+- **Flutter SDK**: [Download Flutter](https://flutter.dev/docs/get-started/install)
+- **Firebase CLI**: [Install Firebase CLI](https://firebase.google.com/docs/cli#install-cli)
+- **Android Studio**: [Download Android Studio](https://developer.android.com/studio)
+- **VS Code**: [Download Visual Studio Code](https://code.visualstudio.com/)
+- **Git**: [Download Git](https://git-scm.com/downloads)
+
+## Installing Software
+### For Windows:
+1. **Install Flutter**:
+   - Go to the downloaded Flutter SDK zip file
+   - Extract the zip file to C:\src\flutter (you might need to create this folder)
+   - Add the Flutter bin directory to your system PATH.
+   
+2. **Install Git**:
+   - Run the Git installer and follow the installation steps.
+
+3. **Install Android Studio**:
+   - Run the Android Studio installer and follow the setup wizard.
+   - Install the Flutter and Dart plugins from the plugins marketplace.
+
+### For Mac:
+1. **Install Flutter**:
+   - Open Terminal.
+   - Run the following command:
+     ```bash
+     git clone https://github.com/flutter/flutter.git -b stable
+     ```
+   - Add Flutter to your PATH in your .bash_profile or .zshrc file:
+     ```bash
+     export PATH="$PATH:`pwd`/flutter/bin"
+     ```
+
+2. **Install Git**:
+   - You can install Git via Homebrew:
+     ```bash
+     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+     brew install git
+     ```
+
+3. **Install Android Studio**:
+   - Download and install Android Studio from the link above. 
+   - Set up Flutter and Dart plugins.
+
+## Configuring Firebase
+1. Go to the [Firebase Console](https://console.firebase.google.com/)
+2. Create a new project named "Fatecaster".
+3. Go to Project Settings > Add App > Android.
+4. Register your app and download the `google-services.json` file.
+5. Move `google-services.json` to `android/app/` directory of your Flutter project.
+
+## Setting Up the Flutter App
+1. Open a terminal window.
+2. Clone the Fatecaster repository:
+   ```bash
+   git clone https://github.com/feralucce/fatecaster.git
+   cd fatecaster
+   ```
+3. Install dependencies:
+   ```bash
+   flutter pub get
+   ```
+4. Open the project in Android Studio or VS Code.
+
+## Testing the App
+1. Make sure your emulator or physical device is connected.
+2. Run the app:
+   ```bash
+   flutter run
+   ```
+3. Follow the logs in the console for any errors.
+
+## Troubleshooting
+- If you encounter issues with `flutter doctor`, ensure all environment variables are set properly.
+- Double-check that `google-services.json` is in the correct directory.
+- If the emulator does not start, ensure that you have enabled virtualization in your computer’s BIOS settings.
+
+If you have any questions or need further assistance, feel free to ask!
