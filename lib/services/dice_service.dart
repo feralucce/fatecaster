@@ -3,13 +3,13 @@ import 'dart:math';
 class DiceService {
   /// Parses a dice notation string (e.g., '1d6+2') into its components.
   Map<String, dynamic> parseDiceNotation(String notation) {
-    final regex = RegExp(r'^(*)d(+)([+-]+)?$');
+    final regex = RegExp(r'^(\d*)d(\d+)([+-]\d+)?$');
     final match = regex.firstMatch(notation);
     if (match == null) {
       throw FormatException('Invalid dice notation: $notation');
     }
 
-    final numberOfDice = int.parse(match.group(1) ?? '1');
+    final numberOfDice = int.parse(match.group(1)!.isEmpty ? '1' : match.group(1)!);
     final numberOfSides = int.parse(match.group(2)!);
     final modifier = match.group(3) != null ? int.parse(match.group(3)!) : 0;
     return {
@@ -22,10 +22,10 @@ class DiceService {
   /// Rolls the specified number of dice and returns the results along with the total.
   Map<String, dynamic> rollDice(String notation) {
     final parsed = parseDiceNotation(notation);
-    final numberOfDice = parsed['numberOfDice'];
-    final numberOfSides = parsed['numberOfSides'];
-    final modifier = parsed['modifier'];
-    
+    final numberOfDice = parsed['numberOfDice'] as int;
+    final numberOfSides = parsed['numberOfSides'] as int;
+    final modifier = parsed['modifier'] as int;
+
     final random = Random();
     final rolls = <int>[];
     int total = modifier;
@@ -47,26 +47,26 @@ class DiceService {
   /// Rolls dice with advantage (keep highest of two rolls).
   Map<String, dynamic> rollWithAdvantage(String notation) {
     final parsed = parseDiceNotation(notation);
-    final numberOfDice = parsed['numberOfDice'];
-    final numberOfSides = parsed['numberOfSides'];
-    final modifier = parsed['modifier'];
-    
+    final numberOfDice = parsed['numberOfDice'] as int;
+    final numberOfSides = parsed['numberOfSides'] as int;
+    final modifier = parsed['modifier'] as int;
+
     final random = Random();
-    
+
     // First roll
     final firstRolls = <int>[];
     for (var i = 0; i < numberOfDice; i++) {
       firstRolls.add(random.nextInt(numberOfSides) + 1);
     }
     final firstTotal = firstRolls.reduce((a, b) => a + b);
-    
+
     // Second roll
     final secondRolls = <int>[];
     for (var i = 0; i < numberOfDice; i++) {
       secondRolls.add(random.nextInt(numberOfSides) + 1);
     }
     final secondTotal = secondRolls.reduce((a, b) => a + b);
-    
+
     // Keep the highest
     final bestTotal = max(firstTotal, secondTotal);
     final bestRolls = bestTotal == firstTotal ? firstRolls : secondRolls;
@@ -85,26 +85,26 @@ class DiceService {
   /// Rolls dice with disadvantage (keep lowest of two rolls).
   Map<String, dynamic> rollWithDisadvantage(String notation) {
     final parsed = parseDiceNotation(notation);
-    final numberOfDice = parsed['numberOfDice'];
-    final numberOfSides = parsed['numberOfSides'];
-    final modifier = parsed['modifier'];
-    
+    final numberOfDice = parsed['numberOfDice'] as int;
+    final numberOfSides = parsed['numberOfSides'] as int;
+    final modifier = parsed['modifier'] as int;
+
     final random = Random();
-    
+
     // First roll
     final firstRolls = <int>[];
     for (var i = 0; i < numberOfDice; i++) {
       firstRolls.add(random.nextInt(numberOfSides) + 1);
     }
     final firstTotal = firstRolls.reduce((a, b) => a + b);
-    
+
     // Second roll
     final secondRolls = <int>[];
     for (var i = 0; i < numberOfDice; i++) {
       secondRolls.add(random.nextInt(numberOfSides) + 1);
     }
     final secondTotal = secondRolls.reduce((a, b) => a + b);
-    
+
     // Keep the lowest
     final worstTotal = min(firstTotal, secondTotal);
     final worstRolls = worstTotal == firstTotal ? firstRolls : secondRolls;

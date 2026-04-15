@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'dice_service.dart'; // Assuming this is the service you integrated
+import '../services/dice_service.dart';
 
 class DiceRollingScreen extends StatefulWidget {
   @override
@@ -10,26 +10,61 @@ class DiceRollingScreen extends StatefulWidget {
 class _DiceRollingScreenState extends State<DiceRollingScreen> {
   final TextEditingController _diceController = TextEditingController();
   final List<String> _rollHistory = [];
+  final DiceService _diceService = DiceService();
   String _result = '';
 
-  void _rollDice(String notation) {
-    // Call to DiceService to perform the roll
-    final DateTime timestamp = DateTime.now().toUtc();
-    final String rollResult = DiceService.roll(notation); // Example method call
-    setState(() {
-      _result = '[0;32m$timestamp: $rollResult[0m';
-      _rollHistory.add('[$timestamp] Rolled: $rollResult');
-    });
+  void _rollNormal() {
+    final notation = _diceController.text.trim();
+    if (notation.isEmpty) return;
+    try {
+      final timestamp = DateTime.now().toUtc();
+      final result = _diceService.rollDice(notation);
+      final total = result['total'] as int;
+      setState(() {
+        _result = '$total';
+        _rollHistory.add('[$timestamp] $notation = $total');
+      });
+    } catch (e) {
+      setState(() { _result = 'Invalid notation'; });
+    }
   }
 
-  void _rollNormal() => _rollDice(_diceController.text);
-  void _rollAdvantage() => _rollDice('${_diceController.text}d2'); // Example advantage logic
-  void _rollDisadvantage() => _rollDice('${_diceController.text}d0'); // Example disadvantage logic
+  void _rollAdvantage() {
+    final notation = _diceController.text.trim();
+    if (notation.isEmpty) return;
+    try {
+      final timestamp = DateTime.now().toUtc();
+      final result = _diceService.rollWithAdvantage(notation);
+      final total = result['total'] as int;
+      setState(() {
+        _result = '$total (advantage)';
+        _rollHistory.add('[$timestamp] $notation (adv) = $total');
+      });
+    } catch (e) {
+      setState(() { _result = 'Invalid notation'; });
+    }
+  }
+
+  void _rollDisadvantage() {
+    final notation = _diceController.text.trim();
+    if (notation.isEmpty) return;
+    try {
+      final timestamp = DateTime.now().toUtc();
+      final result = _diceService.rollWithDisadvantage(notation);
+      final total = result['total'] as int;
+      setState(() {
+        _result = '$total (disadvantage)';
+        _rollHistory.add('[$timestamp] $notation (dis) = $total');
+      });
+    } catch (e) {
+      setState(() { _result = 'Invalid notation'; });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Dice Roller')), 
+      appBar: AppBar(title: const Text('Dice Roller')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Card(
@@ -43,21 +78,21 @@ class _DiceRollingScreenState extends State<DiceRollingScreen> {
               children: [
                 TextField(
                   controller: _diceController,
-                  decoration: InputDecoration(labelText: 'Enter dice notation (e.g., 2d6)'),
+                  decoration: const InputDecoration(labelText: 'Enter dice notation (e.g., 2d6)'),
                   inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d*d\d*$'))],
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    ElevatedButton(onPressed: _rollNormal, child: Text('Roll Normal')), 
-                    ElevatedButton(onPressed: _rollAdvantage, child: Text('Roll Advantage')), 
-                    ElevatedButton(onPressed: _rollDisadvantage, child: Text('Roll Disadvantage')), 
+                    ElevatedButton(onPressed: _rollNormal, child: const Text('Roll Normal')),
+                    ElevatedButton(onPressed: _rollAdvantage, child: const Text('Roll Advantage')),
+                    ElevatedButton(onPressed: _rollDisadvantage, child: const Text('Roll Disadvantage')),
                   ],
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Text('Result: $_result'),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Expanded(
                   child: ListView.builder(
                     itemCount: _rollHistory.length,
@@ -72,4 +107,5 @@ class _DiceRollingScreenState extends State<DiceRollingScreen> {
         ),
       ),
     );
+  }
 }
