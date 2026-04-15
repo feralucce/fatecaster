@@ -3,13 +3,14 @@ import 'dart:math';
 class DiceService {
   /// Parses a dice notation string (e.g., '1d6+2') into its components.
   Map<String, dynamic> parseDiceNotation(String notation) {
-    final regex = RegExp(r'^(*)d(+)([+-]+)?$');
-    final match = regex.firstMatch(notation);
+    final regex = RegExp(r'^(\d*)d(\d+)([+-]\d+)?$', caseSensitive: false);
+    final match = regex.firstMatch(notation.trim());
     if (match == null) {
       throw FormatException('Invalid dice notation: $notation');
     }
 
-    final numberOfDice = int.parse(match.group(1) ?? '1');
+    final countStr = match.group(1) ?? '';
+    final numberOfDice = countStr.isEmpty ? 1 : int.parse(countStr);
     final numberOfSides = int.parse(match.group(2)!);
     final modifier = match.group(3) != null ? int.parse(match.group(3)!) : 0;
     return {
